@@ -10,16 +10,16 @@ export default function TodoFilter({ filter, setFilter, todos }) {
         Все ({todos.length})
       </button>
       <button
-        className={filter === "inProgress" ? "active" : ""}
-        onClick={() => setFilter("inProgress")}
+        className={filter === "inWork" ? "active" : ""}
+        onClick={() => setFilter("inWork")}
       >
         В работе ({todos.filter((t) => !t.isDone).length})
       </button>
       <button
-        className={filter === "done" ? "active" : ""}
-        onClick={() => setFilter("done")}
+        className={filter === "completed" ? "active" : ""}
+        onClick={() => setFilter("completed")}
       >
-        Сделано ({todos.filter((t) => t.isDone).length})
+        Выполнено ({todos.filter((t) => t.isDone).length})
       </button>
     </div>
   );

@@ -1,54 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default function TodoItem({ todo, onToggle, onDelete, onEdit }) {
-  const [editing, setEditing] = useState(false);
-  const [text, setText] = useState(todo.title);
-  const [error, setError] = useState("");
-
-  const handleSave = () => {
-    const trimmed = text.trim();
-    if (trimmed.length < 2 || trimmed.length > 64) {
-      setError("Название задачи должно быть от 2 до 64 символов");
-      return;
-    }
-    setError("");
-    onEdit(todo.id, trimmed);
-    setEditing(false);
-  };
-
-  const handleCancel = () => {
-    setText(todo.title);
-    setError("");
-    setEditing(false);
-  };
-
+export default function TodoItem({
+  todo,
+  id,
+  toggleDone,
+  deleteTask,
+  startEditing,
+  changeEditValue,
+  saveTask,
+  cancelEditing,
+}) {
   return (
-    <li className="todo-item" key={todo.id}>
+    <li className="todo-item">
       <input
         type="checkbox"
         checked={todo.isDone}
-        onChange={() => onToggle(todo)}
+        onChange={() => toggleDone(id)}
       />
-
-      {editing ? (
+      {todo.isEditing ? (
         <>
           <input
             type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            autoFocus
+            value={todo.editValue}
+            onChange={(e) => changeEditValue(id, e.target.value)}
           />
-          <button onClick={handleSave}>💾</button>
-          <button onClick={handleCancel}>❌</button>
-          {error && <div className="error">{error}</div>}
+          <button className="save-btn" onClick={() => saveTask(id)}>
+            Сохранить
+          </button>
+          <button className="cancel-btn" onClick={() => cancelEditing(id)}>
+            Отменить
+          </button>
         </>
       ) : (
         <>
-          <span style={{ textDecoration: todo.isDone ? "line-through" : "none" }}>
-            {todo.title}
-          </span>
-          <button onClick={() => { setEditing(true); setText(todo.title); }}>✏️</button>
-          <button onClick={() => onDelete(todo.id)}>🗑️</button>
+          <span className={todo.isDone ? "done" : ""}>{todo.title}</span>
+          <button className="edit-btn" onClick={() => startEditing(id)}>
+            Редактировать
+          </button>
+          <button className="delete-btn" onClick={() => deleteTask(id)}>
+            Удалить
+          </button>
         </>
       )}
     </li>
